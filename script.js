@@ -53,7 +53,7 @@ function renderTasks() {
 
     // Delete Button using popup
     const deleteButton = document.createElement("button");
-    deleteButton.innerHTML = "❌";
+    deleteButton.innerHTML = "🗑️";
     deleteButton.className = "delete-btn";
     deleteButton.onclick = () => {
       taskToDeleteIndex = index;
