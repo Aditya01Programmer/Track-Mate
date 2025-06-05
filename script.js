@@ -1,4 +1,4 @@
-// Save the current date when tasks are stored
+// Save tasks to localStorage with a timestamp
 function saveTasks(tasks) {
   localStorage.setItem("tasks", JSON.stringify(tasks));
   localStorage.setItem("lastUpdated", Date.now().toString());
@@ -8,21 +8,18 @@ function saveTasks(tasks) {
 function loadTasks() {
   const lastUpdated = parseInt(localStorage.getItem("lastUpdated"));
   const now = Date.now();
-
-  // If 24 hours passed (86,400,000 ms), clear storage
   if (now - lastUpdated > 86400000) {
     localStorage.removeItem("tasks");
     localStorage.removeItem("lastUpdated");
     return [];
   }
-
-  const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-  return tasks;
+  return JSON.parse(localStorage.getItem("tasks")) || [];
 }
 
 function renderTasks() {
   const taskList = document.getElementById("task-list");
   taskList.innerHTML = "";
+
   tasks.forEach((task, index) => {
     const taskDiv = document.createElement("div");
     taskDiv.className = "task";
@@ -46,8 +43,20 @@ function renderTasks() {
     };
     text.style.textDecoration = checkbox.checked ? "line-through" : "none";
 
+    const deleteBtn = document.createElement("button");
+    deleteBtn.textContent = "🗑️";
+    deleteBtn.className = "delete-btn";
+    deleteBtn.onclick = () => {
+      showConfirmation(() => {
+        tasks.splice(index, 1);
+        saveTasks(tasks);
+        renderTasks();
+      });
+    };
+
     taskDiv.appendChild(checkbox);
     taskDiv.appendChild(text);
+    taskDiv.appendChild(deleteBtn);
     taskList.appendChild(taskDiv);
   });
 }
@@ -58,7 +67,25 @@ function addTask() {
   renderTasks();
 }
 
-// Initial load
+// Custom confirmation modal logic
+function showConfirmation(callback) {
+  const modal = document.getElementById("confirmModal");
+  modal.style.display = "flex";
+
+  const yesBtn = document.getElementById("yesDelete");
+  const noBtn = document.getElementById("noDelete");
+
+  yesBtn.onclick = () => {
+    modal.style.display = "none";
+    callback();
+  };
+
+  noBtn.onclick = () => {
+    modal.style.display = "none";
+  };
+}
+
+// Initialization
 let tasks = loadTasks();
 if (tasks.length === 0) {
   tasks = [{ text: "", checked: false }];
