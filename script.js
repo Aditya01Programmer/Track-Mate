@@ -18,7 +18,6 @@ function loadTasks() {
   const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
   return tasks;
 }
-
 function renderTasks() {
   const taskList = document.getElementById("task-list");
   taskList.innerHTML = "";
@@ -27,6 +26,7 @@ function renderTasks() {
     const taskDiv = document.createElement("div");
     taskDiv.className = "task";
 
+    // Checkbox
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
     checkbox.checked = task.checked;
@@ -36,6 +36,7 @@ function renderTasks() {
       text.style.textDecoration = checkbox.checked ? "line-through" : "none";
     };
 
+    // Text input
     const text = document.createElement("input");
     text.type = "text";
     text.value = task.text;
@@ -46,49 +47,22 @@ function renderTasks() {
     };
     text.style.textDecoration = checkbox.checked ? "line-through" : "none";
 
-    const deleteBtn = document.createElement("button");
-    deleteBtn.innerText = "🗑️";
-    deleteBtn.className = "delete-btn";
-    deleteBtn.onclick = () => {
-      showDeletePopup(() => {
-        tasks.splice(index, 1);
+    // Delete Button
+    const deleteButton = document.createElement("button");
+    deleteButton.innerHTML = "❌";
+    deleteButton.className = "delete-btn";
+    deleteButton.onclick = () => {
+      const confirmDelete = confirm("Are you sure you want to delete this task?");
+      if (confirmDelete) {
+        tasks.splice(index, 1); // Remove task
         saveTasks(tasks);
-        renderTasks();
-      });
+        renderTasks(); // Re-render list
+      }
     };
 
     taskDiv.appendChild(checkbox);
     taskDiv.appendChild(text);
-    taskDiv.appendChild(deleteBtn);
+    taskDiv.appendChild(deleteButton); // Append delete button
     taskList.appendChild(taskDiv);
   });
 }
-
-function addTask() {
-  tasks.push({ text: "", checked: false });
-  saveTasks(tasks);
-  renderTasks();
-}
-
-// Show custom popup
-function showDeletePopup(onConfirm) {
-  const popup = document.getElementById("popup");
-  popup.style.display = "flex";
-
-  document.getElementById("confirm-delete").onclick = () => {
-    popup.style.display = "none";
-    onConfirm();
-  };
-
-  document.getElementById("cancel-delete").onclick = () => {
-    popup.style.display = "none";
-  };
-}
-
-// Initialize
-let tasks = loadTasks();
-if (tasks.length === 0) {
-  tasks = [{ text: "", checked: false }];
-  saveTasks(tasks);
-}
-renderTasks();
