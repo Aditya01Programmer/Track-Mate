@@ -18,6 +18,9 @@ function loadTasks() {
   const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
   return tasks;
 }
+
+let tasks = loadTasks(); // Load tasks from storage
+
 function renderTasks() {
   const taskList = document.getElementById("task-list");
   taskList.innerHTML = "";
@@ -62,7 +65,21 @@ function renderTasks() {
 
     taskDiv.appendChild(checkbox);
     taskDiv.appendChild(text);
-    taskDiv.appendChild(deleteButton); // Append delete button
+    taskDiv.appendChild(deleteButton);
     taskList.appendChild(taskDiv);
   });
 }
+
+// Add a new task to the list
+function addTask() {
+  const newTask = {
+    text: "",
+    checked: false
+  };
+  tasks.push(newTask);
+  saveTasks(tasks);
+  renderTasks();
+}
+
+// Render tasks on page load
+renderTasks();
