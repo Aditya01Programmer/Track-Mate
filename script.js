@@ -20,6 +20,7 @@ function loadTasks() {
 }
 
 let tasks = loadTasks(); // Load tasks from storage
+let taskToDeleteIndex = null; // Track index of task to delete
 
 function renderTasks() {
   const taskList = document.getElementById("task-list");
@@ -50,17 +51,13 @@ function renderTasks() {
     };
     text.style.textDecoration = checkbox.checked ? "line-through" : "none";
 
-    // Delete Button
+    // Delete Button using popup
     const deleteButton = document.createElement("button");
     deleteButton.innerHTML = "❌";
     deleteButton.className = "delete-btn";
     deleteButton.onclick = () => {
-      const confirmDelete = confirm("Are you sure you want to delete this task?");
-      if (confirmDelete) {
-        tasks.splice(index, 1); // Remove task
-        saveTasks(tasks);
-        renderTasks(); // Re-render list
-      }
+      taskToDeleteIndex = index;
+      document.getElementById("popup").style.display = "flex";
     };
 
     taskDiv.appendChild(checkbox);
@@ -80,6 +77,22 @@ function addTask() {
   saveTasks(tasks);
   renderTasks();
 }
+
+// Handle popup confirmation
+document.getElementById("confirm-delete").onclick = () => {
+  if (taskToDeleteIndex !== null) {
+    tasks.splice(taskToDeleteIndex, 1);
+    saveTasks(tasks);
+    renderTasks();
+    taskToDeleteIndex = null;
+    document.getElementById("popup").style.display = "none";
+  }
+};
+
+document.getElementById("cancel-delete").onclick = () => {
+  taskToDeleteIndex = null;
+  document.getElementById("popup").style.display = "none";
+};
 
 // Render tasks on page load
 renderTasks();
