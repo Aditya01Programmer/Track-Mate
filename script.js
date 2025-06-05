@@ -1,4 +1,4 @@
-// Save tasks to localStorage with a timestamp
+// Save the current date when tasks are stored
 function saveTasks(tasks) {
   localStorage.setItem("tasks", JSON.stringify(tasks));
   localStorage.setItem("lastUpdated", Date.now().toString());
@@ -8,12 +8,15 @@ function saveTasks(tasks) {
 function loadTasks() {
   const lastUpdated = parseInt(localStorage.getItem("lastUpdated"));
   const now = Date.now();
+
   if (now - lastUpdated > 86400000) {
     localStorage.removeItem("tasks");
     localStorage.removeItem("lastUpdated");
     return [];
   }
-  return JSON.parse(localStorage.getItem("tasks")) || [];
+
+  const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+  return tasks;
 }
 
 function renderTasks() {
@@ -44,10 +47,10 @@ function renderTasks() {
     text.style.textDecoration = checkbox.checked ? "line-through" : "none";
 
     const deleteBtn = document.createElement("button");
-    deleteBtn.textContent = "🗑️";
+    deleteBtn.innerText = "🗑️";
     deleteBtn.className = "delete-btn";
     deleteBtn.onclick = () => {
-      showConfirmation(() => {
+      showDeletePopup(() => {
         tasks.splice(index, 1);
         saveTasks(tasks);
         renderTasks();
@@ -67,25 +70,22 @@ function addTask() {
   renderTasks();
 }
 
-// Custom confirmation modal logic
-function showConfirmation(callback) {
-  const modal = document.getElementById("confirmModal");
-  modal.style.display = "flex";
+// Show custom popup
+function showDeletePopup(onConfirm) {
+  const popup = document.getElementById("popup");
+  popup.style.display = "flex";
 
-  const yesBtn = document.getElementById("yesDelete");
-  const noBtn = document.getElementById("noDelete");
-
-  yesBtn.onclick = () => {
-    modal.style.display = "none";
-    callback();
+  document.getElementById("confirm-delete").onclick = () => {
+    popup.style.display = "none";
+    onConfirm();
   };
 
-  noBtn.onclick = () => {
-    modal.style.display = "none";
+  document.getElementById("cancel-delete").onclick = () => {
+    popup.style.display = "none";
   };
 }
 
-// Initialization
+// Initialize
 let tasks = loadTasks();
 if (tasks.length === 0) {
   tasks = [{ text: "", checked: false }];
