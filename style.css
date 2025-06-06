@@ -196,3 +196,73 @@ button:hover {
     font-size: 1.2rem;
   }
 }
+/* Add transition for smooth theme change */
+body, .container, .task input[type="text"], button, .popup-box {
+  transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease;
+}
+
+/* Dark mode styles */
+body.dark-mode {
+  background: #121212;
+  color: #eee;
+}
+
+body.dark-mode h1 {
+  color: #90caf9; /* lighter blue */
+}
+
+body.dark-mode .para {
+  color: #f48fb1; /* pinkish */
+}
+
+body.dark-mode .container {
+  background: #1e1e1e;
+  box-shadow: 0 8px 20px rgba(255 255 255 / 0.1);
+  color: #ddd;
+}
+
+body.dark-mode .container h2 {
+  color: #ccc;
+}
+
+body.dark-mode .task {
+  background: #292929;
+}
+
+body.dark-mode .task input[type="text"] {
+  background-color: #3a3a3a;
+  color: #ddd;
+  border: 1px solid #555;
+}
+
+body.dark-mode .task input[type="checkbox"] {
+  filter: invert(1);
+}
+
+body.dark-mode button {
+  background-color: #0077b6;
+  color: white;
+}
+
+body.dark-mode button:hover {
+  background-color: #0096c7;
+}
+
+body.dark-mode .popup {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .popup-box {
+  background-color: #222;
+  color: #eee;
+  box-shadow: 0 0 10px rgba(255 255 255 / 0.3);
+}
+
+body.dark-mode .delete-btn {
+  color: #ff6b6b;
+}
+
+/* Dark mode toggle button style (already minimal, but let's add hover effect) */
+#dark-mode-toggle:hover {
+  color: #ffdd57;
+}
