@@ -80,6 +80,7 @@ button:hover {
   text-decoration: line-through;
   color: gray;
 }
+
 .modal {
   display: none;
   position: fixed;
@@ -118,6 +119,7 @@ button:hover {
   background-color: #3498db;
   color: white;
 }
+
 .popup {
   position: fixed;
   top: 0; left: 0;
@@ -162,6 +164,7 @@ button:hover {
   font-size: 18px;
   margin-left: 10px;
 }
+
 @media (max-width: 600px) {
   h1 {
     font-size: 2rem;
@@ -196,6 +199,7 @@ button:hover {
     font-size: 1.2rem;
   }
 }
+
 /* Add transition for smooth theme change */
 body, .container, .task input[type="text"], button, .popup-box {
   transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease;
@@ -208,11 +212,11 @@ body.dark-mode {
 }
 
 body.dark-mode h1 {
-  color: #90caf9; /* lighter blue */
+  color: #90caf9;
 }
 
 body.dark-mode .para {
-  color: #f48fb1; /* pinkish */
+  color: #f48fb1;
 }
 
 body.dark-mode .container {
@@ -262,7 +266,7 @@ body.dark-mode .delete-btn {
   color: #ff6b6b;
 }
 
-/* Dark mode toggle button style (already minimal, but let's add hover effect) */
+/* Dark mode toggle button hover effect */
 #dark-mode-toggle:hover {
   color: #ffdd57;
 }
