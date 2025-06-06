@@ -96,3 +96,44 @@ document.getElementById("cancel-delete").onclick = () => {
 
 // Render tasks on page load
 renderTasks();
+
+// Dark mode toggle setup
+const toggleBtn = document.getElementById("dark-mode-toggle");
+
+// Initialize theme based on saved preference or system preference
+function initTheme() {
+  const savedTheme = localStorage.getItem("theme");
+  if (savedTheme === "dark") {
+    document.body.classList.add("dark-mode");
+    toggleBtn.textContent = "☀️";
+  } else if (savedTheme === "light") {
+    document.body.classList.remove("dark-mode");
+    toggleBtn.textContent = "🌙";
+  } else {
+    // No saved preference, use system preference
+    if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      document.body.classList.add("dark-mode");
+      toggleBtn.textContent = "☀️";
+      localStorage.setItem("theme", "dark");
+    } else {
+      document.body.classList.remove("dark-mode");
+      toggleBtn.textContent = "🌙";
+      localStorage.setItem("theme", "light");
+    }
+  }
+}
+
+// Toggle dark mode on button click
+toggleBtn.addEventListener("click", () => {
+  const isDark = document.body.classList.toggle("dark-mode");
+  if (isDark) {
+    toggleBtn.textContent = "☀️";
+    localStorage.setItem("theme", "dark");
+  } else {
+    toggleBtn.textContent = "🌙";
+    localStorage.setItem("theme", "light");
+  }
+});
+
+// Run on page load
+initTheme();
